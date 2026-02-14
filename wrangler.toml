@@ -6,3 +6,4 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB"
 database_name = "tsundoc-db"
 database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
+migrations_dir = "src/db/migrations"

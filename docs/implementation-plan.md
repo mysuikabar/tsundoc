@@ -59,111 +59,58 @@ Next.js プロジェクトの初期化と基盤セットアップ。
 
 ---
 
-## Phase 2: 認証 UI 実装
+## Phase 2: 認証 UI 実装 ✅ 完了
 
 ログイン・サインアップフォームの実装、認証フロー完成。
 
-### Step 1: DB マイグレーション
+### Step 1: DB マイグレーション ✅
 
-- `bunx wrangler d1 create tsundoc-db` で D1 データベースを作成し、`wrangler.toml` の `database_id` を更新
-- `bunx drizzle-kit generate` でマイグレーション SQL を生成
-- `bunx wrangler d1 migrations apply tsundoc-db --local` でローカル D1 にスキーマ適用
+- `bunx drizzle-kit generate` でマイグレーション SQL を生成済み
+- `bunx wrangler d1 migrations apply tsundoc-db --local` でローカル D1 にスキーマ適用済み
+- `wrangler.toml` に `migrations_dir = "src/db/migrations"` を追加
 
-### Step 2: ログインフォーム
+### Step 2: ログインフォーム ✅
 
-- `src/app/(auth)/login/page.tsx` を実装
-  - メールアドレス + パスワードの入力フォーム
-  - `auth-client.ts` の `signIn.email()` を使用
-  - バリデーション（空欄チェック、メール形式）
-  - エラー表示（認証失敗時）
-  - 成功時 `/books` へリダイレクト
-  - サインアップページへのリンク
+- `src/app/(auth)/login/page.tsx` — Client Component
+  - メールアドレス + パスワード入力、`signIn.email()` で認証
+  - `useSession()` で認証済みガード → `/books` へリダイレクト
+  - バリデーション（空欄チェック）、日本語エラーメッセージ
 
-### Step 3: サインアップフォーム
+### Step 3: サインアップフォーム ✅
 
-- `src/app/(auth)/signup/page.tsx` を実装
-  - メールアドレス + パスワード + 名前の入力フォーム
-  - `auth-client.ts` の `signUp.email()` を使用
-  - バリデーション（パスワード強度など）
-  - 成功時 `/books` へリダイレクト
-  - ログインページへのリンク
+- `src/app/(auth)/signup/page.tsx` — Client Component
+  - 名前 + メール + パスワード + 確認入力、`signUp.email()` で登録
+  - パスワード 8 文字以上チェック、確認一致チェック
+  - 登録後 `signIn.email()` で自動ログイン → `/books` へリダイレクト
 
-### Step 4: 認証チェック付きレイアウト
+### Step 4: 認証チェック付きレイアウト ✅
 
-- `src/app/(main)/layout.tsx` を実装
-  - サーバーサイドでセッション検証
-  - 未認証ユーザーを `/login` へリダイレクト
-  - ヘッダーにユーザー名・ログアウトボタンを表示
-
-### Step 5: 動作確認
-
-- 新規登録 → ログイン → ログアウトの一連のフロー
-- 未認証で `/books` アクセス → `/login` へリダイレクト
-- 認証済みで `/login` アクセス → `/books` へリダイレクト
-
-### 作成・変更するファイル一覧
-
-| ファイル | 操作 |
-|---------|------|
-| `wrangler.toml` | 修正（database_id） |
-| `src/db/migrations/*.sql` | 新規（自動生成） |
-| `src/app/(auth)/login/page.tsx` | 修正 |
-| `src/app/(auth)/signup/page.tsx` | 修正 |
-| `src/app/(main)/layout.tsx` | 修正 |
+- `src/app/(main)/layout.tsx` — Server Component
+  - `getAuth().api.getSession({ headers })` でセッション検証
+  - 未認証 → `/login` リダイレクト
+  - ヘッダーにユーザー名 + `<LogoutButton />` 表示
+- `src/components/logout-button.tsx` — 新規作成
 
 ---
 
-## Phase 3: ISBN 検索 & 書籍登録
+## Phase 3: ISBN 検索 & 書籍登録 ✅ 完了
 
 OpenBD / Google Books API との連携、書籍登録画面の実装。
 
-### Step 1: 書籍情報 API クライアント
+### Step 1: 書籍情報 API クライアント ✅
 
-- `src/lib/book-api.ts` を実装
-  - `searchByISBN(isbn: string)` — OpenBD API で検索、見つからなければ Google Books API にフォールバック
-  - レスポンスをアプリの `Book` 型に正規化
-  - ISBN-13 のバリデーション
+- `src/lib/book-api.ts` — `BookInfo` 型、`validateISBN()` (ISBN-13 チェックディジット検証)、`searchByISBN()` (OpenBD → Google Books フォールバック)
 
-### Step 2: ISBN 検索 API Route
+### Step 2: ISBN 検索 API Route ✅
 
-- `src/app/api/books/search/route.ts` を実装
-  - `GET /api/books/search?isbn=xxx` でクエリパラメータから ISBN を受け取り検索
-  - 見つかった場合は書籍情報を JSON で返却
-  - 見つからない場合は 404 を返却
-  - 不正な ISBN の場合は 400 を返却
+- `src/app/api/books/search/route.ts` — `GET /api/books/search?isbn=`
+  - 認証チェック、ISBN バリデーション、書籍検索、`BookInfo` JSON 返却
 
-### Step 3: 書籍登録ページ & Server Actions
+### Step 3: 書籍登録ページ & Server Actions ✅
 
-- `src/app/(main)/books/new/page.tsx` を実装
-  - ISBN 入力フォーム
-  - 検索結果のプレビュー表示（タイトル・著者・表紙画像）
-  - 登録ボタン
-- `src/app/(main)/books/new/actions.ts` を実装
-  - `registerBook` Server Action
-  - `books` テーブルに upsert（ISBN で重複チェック）
-  - `user_books` テーブルに紐付けレコードを作成（ステータス: `unread`）
-
-### Step 4: UI コンポーネント
-
-- `src/components/isbn-search-form.tsx` — ISBN 入力 + 検索ボタン
-- 必要に応じて `src/components/ui/` に汎用コンポーネントを追加
-
-### Step 5: 動作確認
-
-- ISBN を入力して書籍情報が表示される
-- 登録ボタンで書籍が DB に保存される
-- 同一 ISBN の二重登録がエラーにならない（upsert）
-- 存在しない ISBN でエラーメッセージが表示される
-
-### 作成・変更するファイル一覧
-
-| ファイル | 操作 |
-|---------|------|
-| `src/lib/book-api.ts` | 新規 |
-| `src/app/api/books/search/route.ts` | 新規 |
-| `src/app/(main)/books/new/page.tsx` | 新規 |
-| `src/app/(main)/books/new/actions.ts` | 新規 |
-| `src/components/isbn-search-form.tsx` | 新規 |
+- `src/app/(main)/books/new/actions.ts` — `registerBook()` Server Action（book upsert + user_books 作成 + 重複チェック）
+- `src/app/(main)/books/new/page.tsx` — Server Component ラッパー（`force-dynamic`）
+- `src/app/(main)/books/new/new-book-form.tsx` — Client Component（ISBN 検索フォーム + プレビュー + 登録ボタン）
 
 ---
 

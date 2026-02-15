@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# tsundoc
 
-## Getting Started
+ISBN を入力するだけで書籍情報を自動取得し、「未読 → 読書中 → 読了」のステータスで積読を管理できる Web アプリ。
 
-First, run the development server:
+## 技術構成
+
+- **Next.js** (App Router) + TypeScript
+- **Cloudflare D1** (SQLite) + **Drizzle ORM**
+- **Better Auth** (メール+パスワード認証)
+- **Tailwind CSS**
+- デプロイ: **Cloudflare Pages**
+
+## セットアップ
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 環境変数
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`.env.local` に以下を設定:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+BETTER_AUTH_SECRET=<secret>
+BETTER_AUTH_URL=http://localhost:3000
+```
 
-## Learn More
+### DB マイグレーション
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+bunx drizzle-kit generate
+bunx wrangler d1 migrations apply tsundoc-db --local
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 開発
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+bun run dev
+```
 
-## Deploy on Vercel
+http://localhost:3000 で起動。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 主な機能
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- メールアドレス+パスワードでの認証
+- ISBN 検索による書籍登録 (OpenBD / Google Books API)
+- 積読リストの一覧表示・ステータスフィルタ
+- ステータス管理 (未読 / 読書中 / 読了)
+- 書籍の削除

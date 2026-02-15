@@ -5,10 +5,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev          # Start dev server (Next.js)
-npm run build        # Production build
-npm run lint         # ESLint
-npm run start        # Start production server
+bun run dev          # Start dev server (Next.js)
+bun run build        # Production build
+bun run lint         # ESLint
+bun run start        # Start production server
 
 # Database
 bunx drizzle-kit generate                                      # Generate migrations

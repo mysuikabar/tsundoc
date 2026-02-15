@@ -21,45 +21,43 @@ export async function registerBook(
   const db = getDB();
   const userId = session.user.id;
 
-  // Upsert book by ISBN
-  let existingBook = await db.query.books.findFirst({
-    where: eq(books.isbn, bookInfo.isbn),
-  });
-
-  if (!existingBook) {
-    const now = new Date();
-    const newBook = {
-      id: ulid(),
+  // Upsert book by ISBN (insert or get existing)
+  const bookId = ulid();
+  await db
+    .insert(books)
+    .values({
+      id: bookId,
       isbn: bookInfo.isbn,
       title: bookInfo.title,
       author: bookInfo.author,
       publisher: bookInfo.publisher,
       coverUrl: bookInfo.coverUrl,
-      createdAt: now,
-    };
-    await db.insert(books).values(newBook);
-    existingBook = { ...newBook };
-  }
+      createdAt: new Date(),
+    })
+    .onConflictDoNothing({ target: books.isbn });
 
-  // Check for duplicate user-book combination
-  const existingUserBook = await db.query.userBooks.findFirst({
-    where: (ub, { and, eq }) =>
-      and(eq(ub.userId, userId), eq(ub.bookId, existingBook.id)),
+  const existingBook = await db.query.books.findFirst({
+    where: eq(books.isbn, bookInfo.isbn),
   });
 
-  if (existingUserBook) {
+  if (!existingBook) {
+    return { error: "書籍の登録に失敗しました" };
+  }
+
+  // Insert user-book link; unique constraint prevents duplicates
+  const now = new Date();
+  try {
+    await db.insert(userBooks).values({
+      id: ulid(),
+      userId,
+      bookId: existingBook.id,
+      status: "unread",
+      createdAt: now,
+      updatedAt: now,
+    });
+  } catch {
     return { error: "この書籍は既に登録されています" };
   }
-
-  const now = new Date();
-  await db.insert(userBooks).values({
-    id: ulid(),
-    userId,
-    bookId: existingBook.id,
-    status: "unread",
-    createdAt: now,
-    updatedAt: now,
-  });
 
   return {};
 }

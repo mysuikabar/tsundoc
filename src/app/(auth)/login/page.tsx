@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn, useSession } from "@/lib/auth-client";
 
 export default function LoginPage() {
+  const router = useRouter();
   const { data: session, isPending } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +16,7 @@ export default function LoginPage() {
   if (isPending) return null;
 
   if (session) {
-    window.location.href = "/books";
+    router.push("/books");
     return null;
   }
 
@@ -40,7 +42,7 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/books";
+    router.push("/books");
   }
 
   return (

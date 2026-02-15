@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import Link from "next/link";
 import { getAuth } from "@/lib/auth";
 import { getDB } from "@/db";
@@ -28,6 +28,11 @@ export default async function BooksPage({
   const activeStatus = (["unread", "reading", "done"].includes(status ?? "") ? status : null) as BookStatus | null;
 
   const db = getDB();
+  const conditions = [eq(userBooks.userId, session.user.id)];
+  if (activeStatus) {
+    conditions.push(eq(userBooks.status, activeStatus));
+  }
+
   const rows = await db
     .select({
       userBookId: userBooks.id,
@@ -38,11 +43,7 @@ export default async function BooksPage({
     })
     .from(userBooks)
     .innerJoin(books, eq(userBooks.bookId, books.id))
-    .where(eq(userBooks.userId, session.user.id));
-
-  const filtered = activeStatus
-    ? rows.filter((r) => r.status === activeStatus)
-    : rows;
+    .where(and(...conditions));
 
   return (
     <div className="space-y-6">
@@ -76,7 +77,7 @@ export default async function BooksPage({
         })}
       </nav>
 
-      <BookList books={filtered as { userBookId: string; title: string; author: string | null; coverUrl: string | null; status: BookStatus }[]} />
+      <BookList books={rows as { userBookId: string; title: string; author: string | null; coverUrl: string | null; status: BookStatus }[]} />
     </div>
   );
 }

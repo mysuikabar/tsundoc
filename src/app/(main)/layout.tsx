@@ -5,8 +5,10 @@ import { LogoutButton } from "@/components/logout-button";
 
 export default async function MainLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   const session = await getAuth().api.getSession({
     headers: await headers(),
@@ -26,6 +28,7 @@ export default async function MainLayout({
         </div>
       </header>
       <main className="px-6 py-8">{children}</main>
+      {modal}
     </div>
   );
 }

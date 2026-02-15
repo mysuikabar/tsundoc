@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import Link from "next/link";
 import { StatusBadge } from "@/components/status-badge";
 import { updateBookStatus, deleteUserBook } from "@/app/(main)/books/actions";
 import type { BookStatus } from "@/types";
@@ -17,13 +18,17 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
   const [isPending, startTransition] = useTransition();
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    e.preventDefault();
+    e.stopPropagation();
     const newStatus = e.target.value as BookStatus;
     startTransition(async () => {
       await updateBookStatus(userBookId, newStatus);
     });
   }
 
-  function handleDelete() {
+  function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    e.stopPropagation();
     if (!window.confirm(`「${title}」を削除しますか？`)) return;
     startTransition(async () => {
       await deleteUserBook(userBookId);
@@ -31,7 +36,10 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
   }
 
   return (
-    <div className={`rounded-lg border bg-white p-4 shadow-sm ${isPending ? "opacity-50" : ""}`}>
+    <Link
+      href={`/books/${userBookId}`}
+      className={`block cursor-pointer rounded-lg border bg-white p-4 shadow-sm transition-shadow hover:shadow-md ${isPending ? "opacity-50" : ""}`}
+    >
       <div className="flex gap-4">
         {coverUrl ? (
           <img
@@ -51,16 +59,18 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
             <StatusBadge status={status} />
           </div>
           <div className="mt-auto flex items-center gap-2 pt-2">
-            <select
-              value={status}
-              onChange={handleStatusChange}
-              disabled={isPending}
-              className="rounded border px-2 py-1 text-sm"
-            >
-              <option value="unread">未読</option>
-              <option value="reading">読書中</option>
-              <option value="done">読了</option>
-            </select>
+            <div onClick={(e) => e.preventDefault()} onMouseDown={(e) => e.stopPropagation()}>
+              <select
+                value={status}
+                onChange={handleStatusChange}
+                disabled={isPending}
+                className="rounded border px-2 py-1 text-sm"
+              >
+                <option value="unread">未読</option>
+                <option value="reading">読書中</option>
+                <option value="done">読了</option>
+              </select>
+            </div>
             <button
               onClick={handleDelete}
               disabled={isPending}
@@ -71,6 +81,6 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

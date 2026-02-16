@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { ulid } from "ulid";
 import { getAuth } from "@/lib/auth";
 import { getDB } from "@/db";
@@ -59,5 +60,6 @@ export async function registerBook(
     return { error: "この書籍は既に登録されています" };
   }
 
+  revalidatePath("/books");
   return {};
 }

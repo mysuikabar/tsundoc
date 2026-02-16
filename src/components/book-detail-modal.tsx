@@ -3,7 +3,13 @@
 import { useRef, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
-export function BookDetailModal({ children }: { children: ReactNode }) {
+export function BookDetailModal({
+  children,
+  title = "書籍詳細",
+}: {
+  children: ReactNode;
+  title?: string;
+}) {
   const router = useRouter();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -33,7 +39,7 @@ export function BookDetailModal({ children }: { children: ReactNode }) {
     >
       <div className="p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold">書籍詳細</h2>
+          <h2 className="text-lg font-bold">{title}</h2>
           <button
             onClick={() => dialogRef.current?.close()}
             className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"

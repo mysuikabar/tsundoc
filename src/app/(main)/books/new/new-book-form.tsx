@@ -43,15 +43,13 @@ export function NewBookForm() {
       if (result.error) {
         setError(result.error);
       } else {
-        router.push("/books");
+        router.back();
       }
     });
   }
 
   return (
     <div className="mx-auto max-w-lg">
-      <h2 className="mb-6 text-xl font-bold">書籍を登録</h2>
-
       <div className="flex gap-2">
         <input
           type="text"

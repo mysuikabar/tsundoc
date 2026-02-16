@@ -20,15 +20,17 @@ export default async function MainLayout({
   }
 
   return (
-    <div className="min-h-screen">
-      <header className="flex items-center justify-between border-b px-6 py-4">
-        <Link href="/" className="text-lg font-bold">tsundoc</Link>
-        <div className="flex items-center gap-4">
-          <span className="text-sm">{session.user.name}</span>
-          <LogoutButton />
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card shadow-sm">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+          <Link href="/" className="text-lg font-bold text-primary">tsundoc</Link>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">{session.user.name}</span>
+            <LogoutButton />
+          </div>
         </div>
       </header>
-      <main className="px-6 py-8">{children}</main>
+      <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
       {modal}
     </div>
   );

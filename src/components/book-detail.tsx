@@ -33,60 +33,60 @@ export function BookDetail({
   updatedAt,
 }: BookDetailProps) {
   return (
-    <div className="flex flex-col gap-6 sm:flex-row">
+    <div className="flex flex-col gap-8 sm:flex-row">
       <div className="shrink-0">
         {coverUrl ? (
           <img
             src={coverUrl}
             alt={title}
-            className="h-48 w-36 rounded-lg object-cover shadow-sm"
+            className="h-48 w-36 rounded-xl object-cover shadow-sm"
           />
         ) : (
-          <div className="flex h-48 w-36 items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-400">
+          <div className="flex h-48 w-36 items-center justify-center rounded-xl bg-muted text-sm text-muted-foreground">
             No Image
           </div>
         )}
       </div>
       <div className="min-w-0 flex-1">
         <h2 className="text-xl font-bold">{title}</h2>
-        <dl className="mt-4 space-y-3 text-sm">
+        <dl className="mt-4 space-y-4 text-sm">
           {author && (
             <div>
-              <dt className="text-gray-500">著者</dt>
-              <dd>{author}</dd>
+              <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">著者</dt>
+              <dd className="mt-0.5">{author}</dd>
             </div>
           )}
           {publisher && (
             <div>
-              <dt className="text-gray-500">出版社</dt>
-              <dd>{publisher}</dd>
+              <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">出版社</dt>
+              <dd className="mt-0.5">{publisher}</dd>
             </div>
           )}
           {isbn && (
             <div>
-              <dt className="text-gray-500">ISBN</dt>
-              <dd className="font-mono">{isbn}</dd>
+              <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">ISBN</dt>
+              <dd className="mt-0.5 font-mono">{isbn}</dd>
             </div>
           )}
           <div>
-            <dt className="text-gray-500">ステータス</dt>
-            <dd className="mt-0.5">
+            <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">ステータス</dt>
+            <dd className="mt-1">
               <StatusBadge status={status} />
             </dd>
           </div>
           {memo && (
             <div>
-              <dt className="text-gray-500">メモ</dt>
-              <dd className="whitespace-pre-wrap">{memo}</dd>
+              <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">メモ</dt>
+              <dd className="mt-0.5 whitespace-pre-wrap">{memo}</dd>
             </div>
           )}
           <div>
-            <dt className="text-gray-500">登録日</dt>
-            <dd>{formatDate(createdAt)}</dd>
+            <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">登録日</dt>
+            <dd className="mt-0.5">{formatDate(createdAt)}</dd>
           </div>
           <div>
-            <dt className="text-gray-500">更新日</dt>
-            <dd>{formatDate(updatedAt)}</dd>
+            <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">更新日</dt>
+            <dd className="mt-0.5">{formatDate(updatedAt)}</dd>
           </div>
         </dl>
       </div>

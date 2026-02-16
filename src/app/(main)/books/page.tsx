@@ -48,15 +48,16 @@ export default async function BooksPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">マイ本棚</h1>
         <Link
           href="/books/new"
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
           書籍を追加
         </Link>
       </div>
 
-      <nav className="flex gap-1">
+      <nav className="flex gap-1 border-b border-border">
         {tabs.map((tab) => {
           const isActive = tab.value === activeStatus;
           const href = tab.value ? `/books?status=${tab.value}` : "/books";
@@ -64,10 +65,10 @@ export default async function BooksPage({
             <Link
               key={tab.label}
               href={href}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+              className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-blue-100 text-blue-700"
-                  : "text-gray-600 hover:bg-gray-100"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
               }`}
             >
               {tab.label}

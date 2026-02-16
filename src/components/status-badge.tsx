@@ -1,9 +1,9 @@
 import type { BookStatus } from "@/types";
 
 const config: Record<BookStatus, { label: string; className: string }> = {
-  unread: { label: "未読", className: "bg-gray-100 text-gray-700" },
-  reading: { label: "読書中", className: "bg-blue-100 text-blue-700" },
-  done: { label: "読了", className: "bg-green-100 text-green-700" },
+  unread: { label: "未読", className: "bg-gray-100 text-gray-600" },
+  reading: { label: "読書中", className: "bg-blue-50 text-blue-600" },
+  done: { label: "読了", className: "bg-emerald-50 text-emerald-600" },
 };
 
 export function StatusBadge({ status }: { status: BookStatus }) {

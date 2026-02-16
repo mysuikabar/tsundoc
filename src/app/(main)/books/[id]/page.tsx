@@ -44,7 +44,7 @@ export default async function BookDetailPage({
     <div className="mx-auto max-w-lg space-y-6">
       <Link
         href="/books"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ export default async function BookDetailPage({
         </svg>
         一覧に戻る
       </Link>
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <BookDetail
           title={row.title}
           author={row.author}

@@ -46,50 +46,58 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-sm space-y-6">
-        <h1 className="text-2xl font-bold text-center">ログイン</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <p className="text-sm text-red-600">{error}</p>
-          )}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium">
-              メールアドレス
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded border px-3 py-2"
-              autoComplete="email"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium">
-              パスワード
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded border px-3 py-2"
-              autoComplete="current-password"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded bg-black py-2 text-white hover:bg-gray-800 disabled:opacity-50"
-          >
-            {loading ? "ログイン中..." : "ログイン"}
-          </button>
-        </form>
-        <p className="text-center text-sm">
+    <div className="flex min-h-screen items-center justify-center bg-muted px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-bold text-primary">tsundoc</h1>
+          <p className="mt-1 text-sm text-muted-foreground">積読管理アプリ</p>
+        </div>
+        <div className="rounded-2xl bg-card p-8 shadow-lg">
+          <h2 className="mb-6 text-xl font-bold text-center">ログイン</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
+                {error}
+              </div>
+            )}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-muted-foreground">
+                メールアドレス
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 block w-full rounded-lg border border-border bg-card px-3 py-2 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                autoComplete="email"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-muted-foreground">
+                パスワード
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 block w-full rounded-lg border border-border bg-card px-3 py-2 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                autoComplete="current-password"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-primary py-2.5 font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+            >
+              {loading ? "ログイン中..." : "ログイン"}
+            </button>
+          </form>
+        </div>
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           アカウントをお持ちでない方は{" "}
-          <Link href="/signup" className="underline">
+          <Link href="/signup" className="font-medium text-primary hover:text-primary-hover">
             新規登録
           </Link>
         </p>

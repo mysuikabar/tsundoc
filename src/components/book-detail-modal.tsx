@@ -3,7 +3,7 @@
 import { useRef, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
-export function BookDetailModal({children}: {  
+export function BookDetailModal({children}: {
   children: ReactNode;
 }) {
   const router = useRouter();
@@ -31,13 +31,13 @@ export function BookDetailModal({children}: {
     <dialog
       ref={dialogRef}
       onClick={handleBackdropClick}
-      className="w-full max-w-lg rounded-xl bg-white p-0 shadow-xl backdrop:bg-black/50"
+      className="m-auto w-full max-w-lg rounded-2xl bg-card p-0 shadow-2xl"
     >
       <div className="p-6">
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-end">
           <button
             onClick={() => dialogRef.current?.close()}
-            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="閉じる"
           >
             <svg

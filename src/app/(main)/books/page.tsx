@@ -47,16 +47,6 @@ export default async function BooksPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">マイ本棚</h1>
-        <Link
-          href="/books/new"
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        >
-          書籍を追加
-        </Link>
-      </div>
-
       <nav className="flex gap-1 border-b border-border">
         {tabs.map((tab) => {
           const isActive = tab.value === activeStatus;
@@ -78,6 +68,13 @@ export default async function BooksPage({
       </nav>
 
       <BookList books={rows as { userBookId: string; title: string; author: string | null; coverUrl: string | null; status: BookStatus }[]} />
+
+      <Link
+        href="/books/new"
+        className="fixed bottom-16 right-16 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-4xl text-white shadow-lg transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      >
+        +
+      </Link>
     </div>
   );
 }

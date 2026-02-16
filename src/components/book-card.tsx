@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
+import { Trash2 } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 import { updateBookStatus, deleteUserBook } from "@/app/(main)/books/actions";
 import type { BookStatus } from "@/types";
@@ -38,8 +39,16 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
   return (
     <Link
       href={`/books/${userBookId}`}
-      className={`block cursor-pointer rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${isPending ? "opacity-50" : ""}`}
+      className={`group relative block cursor-pointer rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${isPending ? "opacity-50" : ""}`}
     >
+      <button
+        onClick={handleDelete}
+        disabled={isPending}
+        className="absolute top-2 right-2 z-10 rounded-full bg-card p-1.5 text-muted-foreground shadow-sm opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-destructive"
+        aria-label="削除"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
       <div className="flex gap-4">
         {coverUrl ? (
           <img
@@ -71,16 +80,6 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
                 <option value="done">読了</option>
               </select>
             </div>
-            <button
-              onClick={handleDelete}
-              disabled={isPending}
-              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-red-50 hover:text-destructive"
-              aria-label="削除"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-            </button>
           </div>
         </div>
       </div>

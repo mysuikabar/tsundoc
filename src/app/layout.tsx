@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "tsundoc",
+  title: "tsundoc | 積読管理アプリ",
   description: "積読管理アプリ",
 };
 

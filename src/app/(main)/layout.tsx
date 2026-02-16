@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 import { getAuth } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
 
@@ -23,7 +24,10 @@ export default async function MainLayout({
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card shadow-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="text-lg font-bold text-primary">tsundoc</Link>
+          <Link href="/" className="flex items-center gap-1.5 text-lg font-bold text-primary">
+              <BookOpen className="size-5" />
+              tsundoc
+            </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">{session.user.name}</span>
             <LogoutButton />

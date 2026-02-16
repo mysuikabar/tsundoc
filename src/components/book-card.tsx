@@ -3,7 +3,6 @@
 import { useTransition } from "react";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
-import { StatusBadge } from "@/components/status-badge";
 import { updateBookStatus, deleteUserBook } from "@/app/(main)/books/actions";
 import type { BookStatus } from "@/types";
 
@@ -18,10 +17,10 @@ type BookCardProps = {
 export function BookCard({ userBookId, title, author, coverUrl, status }: BookCardProps) {
   const [isPending, startTransition] = useTransition();
 
-  function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleStatusClick(e: React.MouseEvent<HTMLButtonElement>, newStatus: BookStatus) {
     e.preventDefault();
     e.stopPropagation();
-    const newStatus = e.target.value as BookStatus;
+    if (newStatus === status) return;
     startTransition(async () => {
       await updateBookStatus(userBookId, newStatus);
     });
@@ -64,22 +63,25 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
         <div className="flex min-w-0 flex-1 flex-col">
           <h3 className="truncate font-semibold">{title}</h3>
           {author && <p className="truncate text-sm text-muted-foreground">{author}</p>}
-          <div className="mt-1">
-            <StatusBadge status={status} />
-          </div>
-          <div className="mt-auto flex items-center gap-2 pt-2">
-            <div onClick={(e) => e.preventDefault()} onMouseDown={(e) => e.stopPropagation()}>
-              <select
-                value={status}
-                onChange={handleStatusChange}
+          <div className={`mt-auto flex gap-1 pt-2 ${isPending ? "opacity-50 pointer-events-none" : ""}`}>
+            {([
+              { value: "unread", label: "未読", activeClass: "border-gray-400 bg-gray-100 text-gray-700" },
+              { value: "reading", label: "読書中", activeClass: "border-blue-400 bg-blue-50 text-blue-700" },
+              { value: "done", label: "読了", activeClass: "border-emerald-400 bg-emerald-50 text-emerald-700" },
+            ] as const).map(({ value, label, activeClass }) => (
+              <button
+                key={value}
+                onClick={(e) => handleStatusClick(e, value)}
                 disabled={isPending}
-                className="rounded-lg border border-border bg-card px-2 py-1 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className={`rounded-lg border px-2 py-0.5 text-xs font-medium transition-colors ${
+                  status === value
+                    ? activeClass
+                    : "border-border bg-muted/50 text-muted-foreground hover:bg-muted"
+                }`}
               >
-                <option value="unread">未読</option>
-                <option value="reading">読書中</option>
-                <option value="done">読了</option>
-              </select>
-            </div>
+                {label}
+              </button>
+            ))}
           </div>
         </div>
       </div>

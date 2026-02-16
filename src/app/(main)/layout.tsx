@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getAuth } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
 
@@ -21,7 +22,7 @@ export default async function MainLayout({
   return (
     <div className="min-h-screen">
       <header className="flex items-center justify-between border-b px-6 py-4">
-        <h1 className="text-lg font-bold">tsundoc</h1>
+        <Link href="/" className="text-lg font-bold">tsundoc</Link>
         <div className="flex items-center gap-4">
           <span className="text-sm">{session.user.name}</span>
           <LogoutButton />

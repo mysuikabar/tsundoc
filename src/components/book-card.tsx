@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { updateBookStatus, deleteUserBook } from "@/app/(main)/books/actions";
 import { ConfirmDialog } from "@/components/confirm-dialog";
@@ -56,9 +57,11 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
       </button>
       <div className="flex gap-4">
         {coverUrl ? (
-          <img
+          <Image
             src={coverUrl}
             alt={title}
+            width={96}
+            height={128}
             className="h-32 w-24 shrink-0 rounded-lg object-cover"
           />
         ) : (

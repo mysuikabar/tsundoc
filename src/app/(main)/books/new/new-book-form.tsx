@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { registerBook } from "./actions";
 import type { BookInfo } from "@/lib/book-api";
 
@@ -78,9 +79,11 @@ export function NewBookForm() {
         <div className="mt-6 rounded-xl border border-border bg-card p-5 shadow-sm">
           <div className="flex gap-4">
             {book.coverUrl && (
-              <img
+              <Image
                 src={book.coverUrl}
                 alt={book.title}
+                width={80}
+                height={128}
                 className="h-32 w-auto rounded-lg object-contain"
               />
             )}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { StatusBadge } from "@/components/status-badge";
 import type { BookStatus } from "@/types";
 
@@ -36,9 +37,11 @@ export function BookDetail({
     <div className="flex flex-col gap-8 sm:flex-row">
       <div className="shrink-0">
         {coverUrl ? (
-          <img
+          <Image
             src={coverUrl}
             alt={title}
+            width={144}
+            height={192}
             className="h-48 w-36 rounded-xl object-cover shadow-sm"
           />
         ) : (

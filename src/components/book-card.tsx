@@ -1,9 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { updateBookStatus, deleteUserBook } from "@/app/(main)/books/actions";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import type { BookStatus } from "@/types";
 
 type BookCardProps = {
@@ -16,6 +17,7 @@ type BookCardProps = {
 
 export function BookCard({ userBookId, title, author, coverUrl, status }: BookCardProps) {
   const [isPending, startTransition] = useTransition();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   function handleStatusClick(e: React.MouseEvent<HTMLButtonElement>, newStatus: BookStatus) {
     e.preventDefault();
@@ -29,13 +31,17 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     e.stopPropagation();
-    if (!window.confirm(`「${title}」を削除しますか？`)) return;
+    setShowDeleteConfirm(true);
+  }
+
+  function handleDeleteConfirm() {
     startTransition(async () => {
       await deleteUserBook(userBookId);
     });
   }
 
   return (
+    <>
     <Link
       href={`/books/${userBookId}`}
       className={`group relative block cursor-pointer rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${isPending ? "opacity-50" : ""}`}
@@ -86,5 +92,14 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
         </div>
       </div>
     </Link>
+    <ConfirmDialog
+      open={showDeleteConfirm}
+      title="書籍の削除"
+      message={`「${title}」を削除しますか？`}
+      onConfirm={handleDeleteConfirm}
+      onCancel={() => setShowDeleteConfirm(false)}
+      isPending={isPending}
+    />
+    </>
   );
 }

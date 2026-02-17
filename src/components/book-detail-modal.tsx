@@ -33,10 +33,10 @@ export function BookDetailModal({children}: {
       onClick={handleBackdropClick}
       className="m-auto w-full max-w-lg rounded-2xl bg-card p-0 shadow-2xl"
     >
-      <div className="relative p-6">
+      <div className="flex justify-end px-4 pt-4">
         <button
           onClick={() => dialogRef.current?.close()}
-          className="absolute right-4 top-4 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="閉じる"
         >
           <svg
@@ -52,6 +52,8 @@ export function BookDetailModal({children}: {
             />
           </svg>
         </button>
+      </div>
+      <div className="px-6 pb-6">
         {children}
       </div>
     </dialog>

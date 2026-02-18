@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 import { signIn, signUp, useSession } from "@/lib/auth-client";
 
 export default function SignupPage() {
@@ -72,7 +73,7 @@ export default function SignupPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-primary">tsundoc</h1>
+          <h1 className="flex items-center justify-center gap-1.5 text-2xl font-bold text-primary"><BookOpen className="size-6" />tsundoc</h1>
           <p className="mt-1 text-sm text-muted-foreground">積読管理アプリ</p>
         </div>
         <div className="rounded-2xl bg-card p-8 shadow-lg">

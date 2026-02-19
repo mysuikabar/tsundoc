@@ -15,12 +15,13 @@ export default async function InterceptedBookDetailPage({
 }) {
   const { id } = await params;
 
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) return notFound();
 
-  const db = getDB();
+  const db = await getDB();
   const [row] = await db
     .select({
       userBookId: userBooks.id,

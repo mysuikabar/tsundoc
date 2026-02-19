@@ -12,7 +12,8 @@ export default async function MainLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
 

@@ -4,7 +4,8 @@ import { getAuth } from "@/lib/auth";
 import { searchByISBN, validateISBN } from "@/lib/book-api";
 
 export async function GET(req: Request) {
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) {

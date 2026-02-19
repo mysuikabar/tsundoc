@@ -12,14 +12,15 @@ export async function updateBookStatus(
   userBookId: string,
   status: BookStatus,
 ): Promise<{ error?: string }> {
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) {
     return { error: "ログインしてください" };
   }
 
-  const db = getDB();
+  const db = await getDB();
 
   const record = await db.query.userBooks.findFirst({
     where: and(eq(userBooks.id, userBookId), eq(userBooks.userId, session.user.id)),
@@ -41,14 +42,15 @@ export async function updateBookStatus(
 export async function deleteUserBook(
   userBookId: string,
 ): Promise<{ error?: string }> {
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) {
     return { error: "ログインしてください" };
   }
 
-  const db = getDB();
+  const db = await getDB();
 
   const record = await db.query.userBooks.findFirst({
     where: and(eq(userBooks.id, userBookId), eq(userBooks.userId, session.user.id)),

@@ -1,9 +1,11 @@
 import { getAuth } from "@/lib/auth";
 
 export async function GET(req: Request) {
-  return getAuth().handler(req);
+  const auth = await getAuth();
+  return auth.handler(req);
 }
 
 export async function POST(req: Request) {
-  return getAuth().handler(req);
+  const auth = await getAuth();
+  return auth.handler(req);
 }

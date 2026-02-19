@@ -19,7 +19,8 @@ export default async function BooksPage({
 }: {
   searchParams: Promise<{ status?: string }>;
 }) {
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) return null;
@@ -27,7 +28,7 @@ export default async function BooksPage({
   const { status } = await searchParams;
   const activeStatus = (["unread", "reading", "done"].includes(status ?? "") ? status : null) as BookStatus | null;
 
-  const db = getDB();
+  const db = await getDB();
   const conditions = [eq(userBooks.userId, session.user.id)];
   if (activeStatus) {
     conditions.push(eq(userBooks.status, activeStatus));

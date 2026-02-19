@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import * as schema from "./schema";
 
-export function getDB() {
-  const { env } = getCloudflareContext();
+export async function getDB() {
+  const { env } = await getCloudflareContext({ async: true });
   return drizzle(env.DB, { schema });
 }

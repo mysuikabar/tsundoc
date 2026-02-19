@@ -12,14 +12,15 @@ import type { BookInfo } from "@/lib/book-api";
 export async function registerBook(
   bookInfo: BookInfo,
 ): Promise<{ error?: string }> {
-  const session = await getAuth().api.getSession({
+  const auth = await getAuth();
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) {
     return { error: "ログインしてください" };
   }
 
-  const db = getDB();
+  const db = await getDB();
   const userId = session.user.id;
 
   // Upsert book by ISBN (insert or get existing)

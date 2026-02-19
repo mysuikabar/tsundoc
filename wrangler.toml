@@ -12,3 +12,12 @@ binding = "DB"
 database_name = "tsundoc-db"
 database_id = "70c753b9-7864-4d3e-96c4-3e562d9947e3"
 migrations_dir = "src/db/migrations"
+
+[env.staging]
+name = "tsundoc-staging"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "tsundoc-db-staging"
+database_id = "c8fa775c-bf26-47f4-8307-d8873a5e37fb"
+migrations_dir = "src/db/migrations"

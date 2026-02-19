@@ -14,12 +14,12 @@ bun run start        # Start production server
 bunx drizzle-kit generate                                      # Generate migrations
 bunx wrangler d1 migrations apply tsundoc-db --local           # Apply migrations locally
 
-# Deployment target: Cloudflare Pages via @opennextjs/cloudflare
+# Deployment target: Cloudflare Workers via @opennextjs/cloudflare
 ```
 
 ## Architecture
 
-**tsundoc** — a "tsundoku" (積読) tracking app for managing unread books. Next.js 16 App Router on Cloudflare Pages with D1 (SQLite).
+**tsundoc** — a "tsundoku" (積読) tracking app for managing unread books. Next.js 16 App Router on Cloudflare Workers with D1 (SQLite).
 
 ### Stack
 

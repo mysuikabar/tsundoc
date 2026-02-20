@@ -19,5 +19,5 @@ name = "tsundoc-staging"
 [[env.staging.d1_databases]]
 binding = "DB"
 database_name = "tsundoc-db-staging"
-database_id = "c8fa775c-bf26-47f4-8307-d8873a5e37fb"
+database_id = "89554ffe-ae60-443e-a441-105d011116c7"
 migrations_dir = "src/db/migrations"

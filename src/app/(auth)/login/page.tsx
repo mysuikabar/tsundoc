@@ -47,7 +47,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-muted px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <h1 className="flex items-center justify-center gap-1.5 text-2xl font-bold text-primary"><BookOpen className="size-6" />tsundoc</h1>

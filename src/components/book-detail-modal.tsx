@@ -31,7 +31,7 @@ export function BookDetailModal({children}: {
     <dialog
       ref={dialogRef}
       onClick={handleBackdropClick}
-      className="m-auto w-full max-w-lg rounded-2xl bg-card p-0 shadow-2xl"
+      className="mx-auto my-auto w-[calc(100%-3rem)] max-w-lg rounded-2xl bg-card p-0 shadow-2xl"
     >
       <div className="flex justify-end px-4 pt-4">
         <button

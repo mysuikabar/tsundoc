@@ -22,20 +22,20 @@ export default async function MainLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-dvh bg-background">
       <header className="border-b border-border bg-card shadow-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="flex items-center gap-1.5 text-lg font-bold text-primary">
               <BookOpen className="size-5" />
               tsundoc
             </Link>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{session.user.name}</span>
+            <span className="max-w-[120px] truncate text-sm text-muted-foreground">{session.user.name}</span>
             <LogoutButton />
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
+      <main className="mx-auto max-w-5xl px-4 sm:px-6 py-6 sm:py-8">{children}</main>
       {modal}
     </div>
   );

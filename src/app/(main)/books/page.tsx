@@ -72,7 +72,7 @@ export default async function BooksPage({
 
       <Link
         href="/books/new"
-        className="fixed bottom-16 right-16 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-4xl text-white shadow-lg transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-4xl text-white shadow-lg transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       >
         +
       </Link>

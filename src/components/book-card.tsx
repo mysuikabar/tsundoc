@@ -50,7 +50,7 @@ export function BookCard({ userBookId, title, author, coverUrl, status }: BookCa
       <button
         onClick={handleDelete}
         disabled={isPending}
-        className="absolute top-2 right-2 z-10 rounded-full bg-card p-1.5 text-muted-foreground shadow-sm opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-destructive"
+        className="absolute top-2 right-2 z-10 rounded-full bg-card p-1.5 text-muted-foreground shadow-sm opacity-100 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 hover:bg-red-50 hover:text-destructive"
         aria-label="削除"
       >
         <Trash2 className="h-4 w-4" />

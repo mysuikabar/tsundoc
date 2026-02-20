@@ -50,7 +50,7 @@ export function NewBookForm() {
   }
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div>
       <div className="flex gap-2">
         <input
           type="text"

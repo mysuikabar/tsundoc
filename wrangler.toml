@@ -3,6 +3,10 @@ compatibility_date = "2024-12-30"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
 
+[observability]
+enabled = true
+head_sampling_rate = 1.0
+
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
@@ -15,6 +19,10 @@ migrations_dir = "src/db/migrations"
 
 [env.staging]
 name = "tsundoc-staging"
+
+[env.staging.observability]
+enabled = true
+head_sampling_rate = 1.0
 
 [[env.staging.d1_databases]]
 binding = "DB"

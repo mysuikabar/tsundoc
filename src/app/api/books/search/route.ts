@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getAuth } from "@/lib/auth";
-import { searchByISBN, validateISBN } from "@/lib/book-api";
+import { normalizeISBN, searchByISBN, validateISBN } from "@/lib/book-api";
 
 export async function GET(req: Request) {
   const auth = await getAuth();
@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   }
 
   const { searchParams } = new URL(req.url);
-  const isbn = searchParams.get("isbn") ?? "";
+  const isbn = normalizeISBN(searchParams.get("isbn") ?? "");
 
   if (!validateISBN(isbn)) {
     return NextResponse.json(

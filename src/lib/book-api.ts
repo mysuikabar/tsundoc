@@ -11,6 +11,10 @@ export function ensureHttps(url: string | null): string | null {
   return url.replace(/^http:\/\//, "https://");
 }
 
+export function normalizeISBN(isbn: string): string {
+  return isbn.replace(/[-\s]/g, "");
+}
+
 export function validateISBN(isbn: string): boolean {
   if (!/^\d{13}$/.test(isbn)) return false;
   const sum = isbn

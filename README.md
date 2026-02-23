@@ -1,49 +1,54 @@
 # tsundoc
 
-ISBN を入力するだけで書籍情報を自動取得し、「未読 → 読書中 → 読了」のステータスで積読を管理できる Web アプリ。
+A web app for managing your "tsundoku" (unread book pile) — automatically fetches book info by ISBN or keyword (title/author) and tracks reading status: **Unread → Reading → Done**.
 
-## 技術構成
+## Tech Stack
 
-- **Next.js** (App Router) + TypeScript
+- **Next.js 16** (App Router, React Compiler) + TypeScript
 - **Cloudflare D1** (SQLite) + **Drizzle ORM**
-- **Better Auth** (メール+パスワード認証)
-- **Tailwind CSS**
-- デプロイ: **Cloudflare Workers**
+- **Better Auth** (email + password authentication)
+- **Tailwind CSS 4**
+- Deploy: **Cloudflare Workers** (@opennextjs/cloudflare)
 
-## セットアップ
+## Setup
 
 ```bash
 bun install
 ```
 
-### 環境変数
+### Environment Variables
 
-`.env.local` に以下を設定:
+Set the following in `.env.local`:
 
 ```
 BETTER_AUTH_SECRET=<secret>
 BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_BOOKS_API_KEY=<api_key>
 ```
 
-### DB マイグレーション
+### DB Migrations
 
 ```bash
 bunx drizzle-kit generate
 bunx wrangler d1 migrations apply tsundoc-db --local
 ```
 
-## 開発
+## Development
 
 ```bash
 bun run dev
 ```
 
-http://localhost:3000 で起動。
+Runs at http://localhost:3000.
 
-## 主な機能
+## CI/CD
 
-- メールアドレス+パスワードでの認証
-- ISBN 検索による書籍登録 (OpenBD / Google Books API)
-- 積読リストの一覧表示・ステータスフィルタ
-- ステータス管理 (未読 / 読書中 / 読了)
-- 書籍の削除
+GitHub Actions handles all deployments automatically.
+
+| Workflow | Trigger | Action |
+|----------|---------|--------|
+| **CI** | Pull request | Lint + build check |
+| **Preview** | Pull request to `main` | Deploy to staging environment (Cloudflare Workers) with staging D1 migrations applied |
+| **CD** | Push to `main` | Apply D1 migrations and deploy to production (Cloudflare Workers) |
+
+Required GitHub Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`

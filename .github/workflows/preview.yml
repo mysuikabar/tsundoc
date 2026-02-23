@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy-preview:
+    if: ${{ !startsWith(github.head_ref, 'ignore/') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

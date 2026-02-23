@@ -24,9 +24,9 @@ export function validateISBN(isbn: string): boolean {
 }
 
 export async function searchByISBN(isbn: string): Promise<BookInfo | null> {
-  const res = await fetch(
-    `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`,
-  );
+  const apiKey = process.env.GOOGLE_BOOKS_API_KEY;
+  const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}${apiKey ? `&key=${apiKey}` : ""}`;
+  const res = await fetch(url);
   if (!res.ok) return null;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -35,7 +35,7 @@ bunx wrangler d1 migrations apply tsundoc-db --local           # Apply migration
 - `(auth)/` — Public login/signup pages (client components with useState)
 - `(main)/` — Auth-protected routes. Layout checks session server-side, redirects to `/login` if unauthenticated
 - `/api/auth/[...all]` — Better Auth catch-all handler
-- `/api/books/search` — ISBN lookup (OpenBD → Google Books fallback)
+- `/api/books/search` — ISBN lookup (Google Books API)
 
 ### Data Patterns
 

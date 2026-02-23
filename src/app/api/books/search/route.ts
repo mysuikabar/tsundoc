@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getAuth } from "@/lib/auth";
-import { searchByISBN, validateISBN } from "@/lib/book-api";
+import { normalizeISBN, searchByISBN, searchByKeyword, validateISBN } from "@/lib/book-api";
 
 export async function GET(req: Request) {
   const auth = await getAuth();
@@ -13,22 +13,44 @@ export async function GET(req: Request) {
   }
 
   const { searchParams } = new URL(req.url);
-  const isbn = searchParams.get("isbn") ?? "";
+  const isbnRaw = searchParams.get("isbn");
+  const title = searchParams.get("title") ?? "";
+  const author = searchParams.get("author") ?? "";
 
-  if (!validateISBN(isbn)) {
-    return NextResponse.json(
-      { error: "有効なISBN-13を入力してください" },
-      { status: 400 },
-    );
+  if (isbnRaw !== null) {
+    const isbn = normalizeISBN(isbnRaw);
+
+    if (!validateISBN(isbn)) {
+      return NextResponse.json(
+        { error: "有効なISBN-13を入力してください" },
+        { status: 400 },
+      );
+    }
+
+    const book = await searchByISBN(isbn);
+    if (!book) {
+      return NextResponse.json(
+        { error: "書籍が見つかりませんでした" },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json(book);
   }
 
-  const book = await searchByISBN(isbn);
-  if (!book) {
-    return NextResponse.json(
-      { error: "書籍が見つかりませんでした" },
-      { status: 404 },
-    );
+  if (searchParams.has("title") || searchParams.has("author")) {
+    if (!title.trim() && !author.trim()) {
+      return NextResponse.json(
+        { error: "タイトルまたは著者名を入力してください" },
+        { status: 400 },
+      );
+    }
+    const books = await searchByKeyword(title, author);
+    return NextResponse.json(books);
   }
 
-  return NextResponse.json(book);
+  return NextResponse.json(
+    { error: "isbn、title、または author パラメータが必要です" },
+    { status: 400 },
+  );
 }

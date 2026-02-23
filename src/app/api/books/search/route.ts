@@ -14,7 +14,8 @@ export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
   const isbnRaw = searchParams.get("isbn");
-  const q = searchParams.get("q");
+  const title = searchParams.get("title") ?? "";
+  const author = searchParams.get("author") ?? "";
 
   if (isbnRaw !== null) {
     const isbn = normalizeISBN(isbnRaw);
@@ -37,20 +38,19 @@ export async function GET(req: Request) {
     return NextResponse.json(book);
   }
 
-  if (q !== null) {
-    const query = q.trim();
-    if (!query) {
+  if (searchParams.has("title") || searchParams.has("author")) {
+    if (!title.trim() && !author.trim()) {
       return NextResponse.json(
-        { error: "検索キーワードを入力してください" },
+        { error: "タイトルまたは著者名を入力してください" },
         { status: 400 },
       );
     }
-    const books = await searchByKeyword(query);
+    const books = await searchByKeyword(title, author);
     return NextResponse.json(books);
   }
 
   return NextResponse.json(
-    { error: "isbn または q パラメータが必要です" },
+    { error: "isbn、title、または author パラメータが必要です" },
     { status: 400 },
   );
 }

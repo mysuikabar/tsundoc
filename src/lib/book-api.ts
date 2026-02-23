@@ -48,8 +48,12 @@ export async function searchByISBN(isbn: string): Promise<BookInfo | null> {
   };
 }
 
-export async function searchByKeyword(query: string): Promise<BookInfo[]> {
+export async function searchByKeyword(title: string, author: string): Promise<BookInfo[]> {
   const apiKey = process.env.GOOGLE_BOOKS_API_KEY;
+  const parts: string[] = [];
+  if (title.trim()) parts.push(`intitle:${title.trim()}`);
+  if (author.trim()) parts.push(`inauthor:${author.trim()}`);
+  const query = parts.join("+");
   const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=10${apiKey ? `&key=${apiKey}` : ""}`;
   const res = await fetch(url);
   if (!res.ok) return [];

@@ -13,7 +13,8 @@ export function NewBookForm() {
   const [searchMode, setSearchMode] = useState<SearchMode>("keyword");
   const [isbn, setIsbn] = useState("");
   const [isbnResult, setIsbnResult] = useState<BookInfo | null>(null);
-  const [keyword, setKeyword] = useState("");
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
   const [keywordResults, setKeywordResults] = useState<BookInfo[]>([]);
   const [searching, setSearching] = useState(false);
   const [registering, startRegister] = useTransition();
@@ -51,7 +52,10 @@ export function NewBookForm() {
     setKeywordResults([]);
     setSearching(true);
     try {
-      const res = await fetch(`/api/books/search?q=${encodeURIComponent(keyword)}`);
+      const params = new URLSearchParams();
+      if (title.trim()) params.set("title", title.trim());
+      if (author.trim()) params.set("author", author.trim());
+      const res = await fetch(`/api/books/search?${params.toString()}`);
       if (!res.ok) {
         const data = (await res.json()) as { error?: string };
         setError(data.error ?? "検索に失敗しました");
@@ -154,19 +158,27 @@ export function NewBookForm() {
 
       {searchMode === "keyword" && (
         <>
-          <div className="flex gap-2">
+          <div className="space-y-2">
             <input
               type="text"
-              placeholder="タイトル・著者名で検索"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="タイトル"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && handleKeywordSearch()}
-              className="flex-1 rounded-lg border border-border bg-card px-3 py-2 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+            <input
+              type="text"
+              placeholder="著者名"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && handleKeywordSearch()}
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
             <button
               onClick={handleKeywordSearch}
-              disabled={searching || !keyword.trim()}
-              className="rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+              disabled={searching || (!title.trim() && !author.trim())}
+              className="w-full rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
             >
               {searching ? "検索中…" : "検索"}
             </button>

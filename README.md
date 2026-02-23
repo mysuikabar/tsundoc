@@ -1,24 +1,24 @@
 # tsundoc
 
-ISBN またはキーワード（タイトル・著者名）で書籍情報を自動取得し、「未読 → 読書中 → 読了」のステータスで積読を管理できる Web アプリ。
+A web app for managing your "tsundoku" (unread book pile) — automatically fetches book info by ISBN or keyword (title/author) and tracks reading status: **Unread → Reading → Done**.
 
-## 技術構成
+## Tech Stack
 
 - **Next.js 16** (App Router, React Compiler) + TypeScript
 - **Cloudflare D1** (SQLite) + **Drizzle ORM**
-- **Better Auth** (メール+パスワード認証)
+- **Better Auth** (email + password authentication)
 - **Tailwind CSS 4**
-- デプロイ: **Cloudflare Workers** (@opennextjs/cloudflare)
+- Deploy: **Cloudflare Workers** (@opennextjs/cloudflare)
 
-## セットアップ
+## Setup
 
 ```bash
 bun install
 ```
 
-### 環境変数
+### Environment Variables
 
-`.env.local` に以下を設定:
+Set the following in `.env.local`:
 
 ```
 BETTER_AUTH_SECRET=<secret>
@@ -26,25 +26,29 @@ BETTER_AUTH_URL=http://localhost:3000
 GOOGLE_BOOKS_API_KEY=<api_key>
 ```
 
-### DB マイグレーション
+### DB Migrations
 
 ```bash
 bunx drizzle-kit generate
 bunx wrangler d1 migrations apply tsundoc-db --local
 ```
 
-## 開発
+## Development
 
 ```bash
 bun run dev
 ```
 
-http://localhost:3000 で起動。
+Runs at http://localhost:3000.
 
-## デプロイ
+## CI/CD
 
-```bash
-bun run deploy          # 本番環境へデプロイ
-bun run preview         # ローカルで本番ビルドをプレビュー
-```
+GitHub Actions handles all deployments automatically.
 
+| Workflow | Trigger | Action |
+|----------|---------|--------|
+| **CI** | Pull request | Lint + build check |
+| **Preview** | Pull request to `main` | Deploy to staging environment (Cloudflare Workers) with staging D1 migrations applied |
+| **CD** | Push to `main` | Apply D1 migrations and deploy to production (Cloudflare Workers) |
+
+Required GitHub Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
